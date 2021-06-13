@@ -12,21 +12,16 @@ https://realpython.com/installing-python/
 
 ### Setup the Project
 
+#### Good coding practice is to create a virtualenv with **python 3.7**, activate it
+
+* Virtual env setup - https://stackoverflow.com/questions/23842713/using-python-3-in-virtualenv
+
 #### After copying the folder or code base
 
 ```  
 
 $ cd furry-robot 
 $ python setup.py install
-
-```
-
-#### Then you do,
-
-```
-Virtual env setup - 
-
-https://stackoverflow.com/questions/23842713/using-python-3-in-virtualenv
 
 ```
 
