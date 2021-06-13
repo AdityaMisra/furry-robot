@@ -48,7 +48,10 @@ class DeleteListingHandler(CommandHandlerInterface):
 
     def _compute_top_category(self, listing_category_deleted: str) -> None:
         """
-        Computes the top category in the marketplace after deleting a listing
+        Computes the top category in the marketplace after deleting a listing.
+        After removal of a listing, if the listing counts are same for deleted listing's category and old top category
+        then we'll not update the top category
+
         :param listing_category_deleted: deleted listing's category
         :return: None
         """
