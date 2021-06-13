@@ -24,8 +24,9 @@ $ python setup.py install
 #### Then you do,
 
 ```
+Virtual env setup - 
 
-pip install .
+https://stackoverflow.com/questions/23842713/using-python-3-in-virtualenv
 
 ```
 
