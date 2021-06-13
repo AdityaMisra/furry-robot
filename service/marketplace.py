@@ -8,6 +8,7 @@ class MarketPlace(metaclass=Singleton):
 
     def __init__(self) -> None:
         self.top_category_name = None
+        self.top_category_listing_count = 0
         self.users = set()
 
         """

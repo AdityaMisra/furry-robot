@@ -47,11 +47,23 @@ class CreateListingHandler(CommandHandlerInterface):
         # update listing in the marketplace's category
         self.marketplace.categories[listing.category_name].add_listing(listing)
 
+        self._compute_top_category()
+
+        return str(listing.id)
+
+    def _compute_top_category(self) -> None:
+        """
+        Computes the top category in the marketplace
+        :return: None
+        """
+
         # calculating the top_category
         self.marketplace.top_category_name = max(self.marketplace.categories,
                                                  key=lambda key: len(self.marketplace.categories[key].listings))
 
-        return str(listing.id)
+        # set the top_category's listing count
+        self.marketplace.top_category_listing_count = len(
+            self.marketplace.categories[self.marketplace.top_category_name].listings)
 
     def _generate_id(self) -> int:
         """

@@ -42,14 +42,44 @@ class DeleteListingHandler(CommandHandlerInterface):
         if len(self.marketplace.categories[listing.category_name].listings) == 0:
             self.marketplace.categories.pop(listing.category_name)
 
-        # calculating the top_category
-        if self.marketplace.categories:
-            self.marketplace.top_category_name = max(self.marketplace.categories,
-                                                     key=lambda key: len(self.marketplace.categories[key].listings))
-        else:
-            self.marketplace.top_category_name = None
+        self._compute_top_category(listing.category_name)
 
         return self.success
+
+    def _compute_top_category(self, listing_category_deleted: str) -> None:
+        """
+        Computes the top category in the marketplace after deleting a listing
+        :param listing_category_deleted: deleted listing's category
+        :return: None
+        """
+
+        # if not category is present then no need to compute the top category
+        if not self.marketplace.categories:
+            self.marketplace.top_category_name = None
+            self.marketplace.top_category_listing_count = 0
+            return None
+
+        new_top_category_name = None
+
+        # calculating the top_category if the deleted listing's category is same as top_category
+        if listing_category_deleted == self.marketplace.top_category_name:
+            new_top_category_name = max(self.marketplace.categories,
+                                        key=lambda key: len(self.marketplace.categories[key].listings))
+            self.marketplace.top_category_listing_count -= 1
+
+        # newly computed top category's listing count is same as old top_category's listing count
+        # then we don't update the old top_category
+        if self.marketplace.categories[new_top_category_name] \
+                and len(self.marketplace.categories[new_top_category_name].listings) == \
+                self.marketplace.top_category_listing_count:
+            return
+
+        # update the top category
+        self.marketplace.top_category_name = new_top_category_name
+
+        # set the top_category's listing count
+        self.marketplace.top_category_listing_count = len(
+            self.marketplace.categories[self.marketplace.top_category_name].listings)
 
     def parse_input(self, parameters: str) -> List:
         params = parameters.split(' ')

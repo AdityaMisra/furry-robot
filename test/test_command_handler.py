@@ -26,6 +26,10 @@ class TestCommandHandlerInterface:
         assert input_parser(
             "CREATE_LISTING user1 'Phone model 8' 'Black color, brand new' 2000 'Electronics'") == str(100002)
 
+    def test_listing_creation_3(self):
+        assert input_parser(
+            "CREATE_LISTING user1 'Black shoes' 'Training shoes' 100 'Sports'") == str(100003)
+
     def test_failure_listing_creation(self):
         assert input_parser(
             "CREATE_LISTING user2 'Phone model 8' 'Black color, brand new' 1000 'Electronics'") == "Error - unknown user"
@@ -72,5 +76,11 @@ class TestCommandHandlerInterface:
     def test_failure_listing_does_not_exist_delete_listing(self):
         assert input_parser("DELETE_LISTING user1 10000122") == "Error - listing does not exist"
 
-    def test_delete_listing_clearing_out_the_category(self):
+    def test_delete_listing_same_count_category(self):
         assert input_parser("DELETE_LISTING user1 100001") == "Success"
+
+    def test_top_category(self):
+        assert input_parser("GET_TOP_CATEGORY user1") == "Sports"
+
+    def test_delete_listing_clearing_out_the_category(self):
+        assert input_parser("DELETE_LISTING user1 100003") == "Success"

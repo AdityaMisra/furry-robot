@@ -1,3 +1,5 @@
+from pprint import pprint
+
 from command_handlers.command_factory import factory
 
 
@@ -16,7 +18,7 @@ def input_parser(params: str) -> str:
 
     output = command_handler.handle(commands[1])
 
-    # For debugging
+    # Uncomment this for debugging
     # pprint(command_handler.marketplace.__dict__)
 
     return output
