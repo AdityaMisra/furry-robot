@@ -1,6 +1,7 @@
 from typing import List
 
 from command_handlers.handler import CommandHandlerInterface
+from entity.listing import Listing
 from entity.user import User
 
 
@@ -21,13 +22,27 @@ class DeleteListingHandler(CommandHandlerInterface):
         if listing.user != User(username):
             return self.error_listing_mismatch
 
-        self.marketplace.listings.pop(listing_id, None)
+        return self.delete_listing(listing)
+
+    def delete_listing(self, listing: Listing) -> str:
+        """
+        Deletes the listing from the marketplace
+        :param listing: Listing instance
+        :return: Success message after successfully deleting it
+        """
+
+        # remove listing from the marketplace
+        self.marketplace.listings.pop(listing.id, None)
+
+        # remove listing from the category
         self.marketplace.categories[listing.category_name].remove_listing(listing)
 
-        # Delete category which doesn't have any listings
+        # after removing listing from the category, check if a category doesn't have any listings,
+        # then remove the category as well
         if len(self.marketplace.categories[listing.category_name].listings) == 0:
             self.marketplace.categories.pop(listing.category_name)
 
+        # calculating the top_category
         if self.marketplace.categories:
             self.marketplace.top_category_name = max(self.marketplace.categories,
                                                      key=lambda key: len(self.marketplace.categories[key].listings))

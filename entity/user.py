@@ -1,7 +1,7 @@
 
 class User(object):
     """
-
+    User entity of the marketplace
     """
 
     def __init__(self, username) -> None:

@@ -3,7 +3,7 @@ from entity.listing import Listing
 
 class Category(object):
     """
-
+    Category entity of the marketplace
     """
 
     def __init__(self, category_name) -> None:

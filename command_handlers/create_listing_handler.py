@@ -7,7 +7,6 @@ from entity.user import User
 
 
 class CreateListingHandler(CommandHandlerInterface):
-    error_unknown_user = "Error - unknown user"
 
     def handle(self, parameters: str) -> str:
 
@@ -22,26 +21,47 @@ class CreateListingHandler(CommandHandlerInterface):
         price = float(params[3])
         category_name = params[4]
 
-        listing = Listing(self._generate_id(), title, description, price, User(username),
-                          category_name)
+        return self.create_listing(title, description, price, username, category_name)
 
-        self.marketplace.listings.update({listing.listing_id: listing})
+    def create_listing(self, title: str, description: str, price: float, username: str, category_name: str) -> str:
+        """
+        Creates entry for the listing in marketplace and updates the category
+        :param title: title of the listing
+        :param description: description of the listing
+        :param price: price of the listing
+        :param username: username of the listing
+        :param category_name: category of the listing
+        :return: listing id
+        """
 
+        listing = Listing(self._generate_id(), title, description, price, User(username), category_name)
+
+        # update listing in the marketplace
+        self.marketplace.listings.update({listing.id: listing})
+
+        # if listing's category doesn't exists then create a category
         category = self.marketplace.categories.get(listing.category_name)
         if not category:
             self.marketplace.categories[listing.category_name] = Category(category_name)
 
+        # update listing in the marketplace's category
         self.marketplace.categories[listing.category_name].add_listing(listing)
 
+        # calculating the top_category
         self.marketplace.top_category_name = max(self.marketplace.categories,
                                                  key=lambda key: len(self.marketplace.categories[key].listings))
 
-        return str(listing.listing_id)
+        return str(listing.id)
 
-    def _generate_id(self):
-        _id = lambda l: 100000 + l
+    def _generate_id(self) -> int:
+        """
+        Generates the id for the listing.
+        :return: id
+        """
 
-        return _id(len(self.marketplace.listings) + 1)
+        get_id = lambda l: 100000 + l
+
+        return get_id(len(self.marketplace.listings) + 1)
 
     def parse_input(self, parameters: str) -> List:
         params = []

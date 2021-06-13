@@ -1,12 +1,8 @@
-from typing import List
-
 from command_handlers.handler import CommandHandlerInterface
-from entity.listing import Listing
 
 
 class GetListingHandler(CommandHandlerInterface):
     error_not_found = "Error - not found"
-    error_unknown_user = "Error - unknown user"
 
     def handle(self, parameters: str) -> str:
 
@@ -17,6 +13,15 @@ class GetListingHandler(CommandHandlerInterface):
             return self.error_unknown_user
 
         listing_id = int(params[1])
+
+        return self.get_listing(listing_id)
+
+    def get_listing(self, listing_id: int) -> str:
+        """
+        Fetch the listing from the marketplace
+        :param listing_id: listing's id
+        :return: Listing instance
+        """
 
         listing = self.marketplace.listings.get(listing_id)
         if listing:

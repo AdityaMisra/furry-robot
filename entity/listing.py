@@ -5,12 +5,12 @@ from entity.user import User
 
 class Listing(object):
     """
-
+    Listing entity of the marketplace
     """
 
     def __init__(self, id: int, title: str, description: str, price: float, user: User, category_name: str) -> None:
         super().__init__()
-        self.listing_id = id
+        self.id = id
         self.title = title
         self.description = description
         self.price = price

@@ -1,9 +1,13 @@
-from pprint import pprint
-
 from command_handlers.command_factory import factory
 
 
-def input_parser(params):
+def input_parser(params: str) -> str:
+    """
+    It parses the input from STDIN the return the output to the STDOUT
+    :param params: input command
+    :return: output in string
+    """
+
     commands = params.split(' ', 1)
     command_handler = factory.get_command_handler(commands[0])
 
@@ -19,6 +23,10 @@ def input_parser(params):
 
 
 def reader():
+    """
+    STDIN reader
+    :return:
+    """
     while True:
         try:
             print(input_parser(input("# ")))
