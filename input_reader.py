@@ -12,14 +12,18 @@ def input_parser(params):
 
     output = command_handler.handle(commands[1])
 
-    pprint(command_handler.marketplace.__dict__)
+    # For debugging
+    # pprint(command_handler.marketplace.__dict__)
 
     return output
 
 
 def reader():
     while True:
-        print(input_parser(input("# ")))
+        try:
+            print(input_parser(input("# ")))
+        except EOFError as e:
+            exit(0)
 
 
 if __name__ == '__main__':

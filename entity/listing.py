@@ -19,6 +19,6 @@ class Listing(object):
         self.creation_time = datetime.now()
 
     def __repr__(self) -> str:
-        return "{0}|{1}|{2}|{3}|{4}|{5}".format(self.title, self.description, self.price,
+        return "{0}|{1}|{2}|{3}|{4}|{5}".format(self.title, self.description, int(self.price),
                                                 self.creation_time.strftime('%Y-%m-%d %H:%M:%S'), self.category_name,
                                                 self.user)

@@ -24,6 +24,16 @@ class DeleteListingHandler(CommandHandlerInterface):
         self.marketplace.listings.pop(listing_id, None)
         self.marketplace.categories[listing.category_name].remove_listing(listing)
 
+        # Delete category which doesn't have any listings
+        if len(self.marketplace.categories[listing.category_name].listings) == 0:
+            self.marketplace.categories.pop(listing.category_name)
+
+        if self.marketplace.categories:
+            self.marketplace.top_category_name = max(self.marketplace.categories,
+                                                     key=lambda key: len(self.marketplace.categories[key].listings))
+        else:
+            self.marketplace.top_category_name = None
+
         return self.success
 
     def parse_input(self, parameters: str) -> List:
